@@ -23,3 +23,20 @@ aws lambda invoke \
   --function-name hello-cli \
   --log-type Tail \
   logs/lambda-exec.log
+
+# 6. atualizar codigo e zipar
+zip function.zip index.js
+
+# 7. enviar atualização para aws
+aws lambda update-function-code \
+  --zip-file fileb://function.zip \
+  --function-name hello-cli \
+  --publish \
+  | tee logs/lambda-update.log
+
+# 8. remover recursos
+aws lambda delete-function \
+  --function-name hello-cli
+
+aws iam delete-role \
+  --role-name lambda-exemplo

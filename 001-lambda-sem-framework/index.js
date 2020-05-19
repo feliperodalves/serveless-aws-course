@@ -3,7 +3,7 @@ async function handler(event, context) {
   console.log('Evento...', JSON.stringify(event, null, 2));
 
   return {
-    hello: 'world',
+    hello: 'world 2',
   };
 }
 

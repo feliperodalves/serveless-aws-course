@@ -41,12 +41,11 @@ class Handler {
   }
 
   handlerError(responseData) {
-    const response = {
+    return {
       statusCode: responseData.statusCode || 501,
       headers: { 'Content-Type': 'text/plain' },
       body: `Couldn't create item!`,
     };
-    return response;
   }
 
   async main(event) {
@@ -65,7 +64,7 @@ class Handler {
 
 //factory
 const AWS = require('aws-sdk');
-const dynamoDB = AWS.DynamoDB.DocumentClient();
+const dynamoDB = new AWS.DynamoDB.DocumentClient();
 const handler = new Handler({
   dynamoDBSvc: dynamoDB,
 });

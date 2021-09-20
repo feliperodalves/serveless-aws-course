@@ -8,6 +8,35 @@ provider:
   name: aws
   runtime: nodejs12.x
   lambdaHashingVersion: 20201221
+  environment:
+    DYNAMO_TABLE: Heroes
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:GetItem
+        - dynamodb:UpdateItem
+        - dynamodb:PutItem
+      Resource: 'anr:aws:dynamodb:${self:provider.region}:*:table:${self:provider.environment.DYNAMO_TABLE}'
+
+resources:
+  Resources:
+    HeroesTable:
+      Type: AWS::DynamoDB:Table
+      Properties:
+        TableName: ${self:provider.environment.DYNAMO_TABLE}
+        AttributeDefinitions:
+          - AtributeName: id
+            AttributeType: S
+          - AtributeName: nome
+            AttributeType: S
+        KeySchema:
+          - AtributeName: id
+            AttributeType: HASH
+          - AtributeName: nome
+            AttributeType: RANGE
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
 
 functions:
   hero-insert:
